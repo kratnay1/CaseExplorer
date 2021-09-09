@@ -121,6 +121,10 @@ const App = props => {
     });
   }, []);
 
+  const updateTitle = () => {
+    setTitle(getTitle(metadata));
+  };
+
   if (!metadata) {
     return (
       <div className="loader-container">
@@ -133,7 +137,7 @@ const App = props => {
         <Router>
           <Header title={title} version={version} />
           <div className="navbar">
-            <NavBar />
+            <NavBar updateTitle={updateTitle} />
           </div>
           <div className="content">
             <Switch>

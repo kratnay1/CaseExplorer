@@ -1,4 +1,5 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { Nav, INavLinkGroup } from 'office-ui-fabric-react/lib/Nav';
 import { toTitleCase, getURLLastPart } from './utils';
 import CopFinder from './CopFinder';
@@ -101,7 +102,7 @@ export const genNavStructure = metadata => {
   ];
 };
 
-const NavBar: React.FunctionComponent = props => {
+const NavBar: React.FunctionComponent = withRouter(props => {
   function _onRenderGroupHeader(group: INavLinkGroup): JSX.Element {
     if (group.name !== 'Search By BPD Officer') return <h3>{group.name}</h3>;
     return (
@@ -140,6 +141,14 @@ const NavBar: React.FunctionComponent = props => {
       onRenderGroupHeader={_onRenderGroupHeader}
       onRenderLink={_onRenderLink}
       groups={navLinkGroups}
+      onLinkClick={(event, element) => {
+        if (element.links === undefined) {
+          event.preventDefault();
+          props.history.push(element.url);
+          props.updateTitle();
+          window.scroll(0, 0);
+        }
+      }}
       styles={props => ({
         chevronIcon: {
           transform: props.isExpanded ? 'rotate(0deg)' : 'rotate(-90deg)'
@@ -147,7 +156,7 @@ const NavBar: React.FunctionComponent = props => {
       })}
     />
   );
-};
+});
 export default NavBar;
 
 const styles = mergeStyleSets({
